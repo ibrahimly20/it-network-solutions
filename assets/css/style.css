@@ -187,6 +187,7 @@ p { margin: 0 0 1em; }
   fill: none; stroke: var(--blue); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none;
 }
 .contact-list a { color: var(--ink); }
+.phones { display: flex; flex-direction: column; }
 .contact-list a:hover { color: var(--blue); }
 .form { background: var(--bg-alt); border-radius: 18px; padding: 36px; display: grid; gap: 18px; }
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }

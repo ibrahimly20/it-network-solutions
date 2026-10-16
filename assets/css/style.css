@@ -149,7 +149,7 @@ p { margin: 0 0 1em; }
 }
 .client:hover { border-color: var(--blue); box-shadow: var(--shadow); }
 .client-logo {
-  height: 96px; display: grid; place-items: center; border-radius: 10px; background: var(--bg-alt);
+  height: 96px; display: grid; place-items: center; border-radius: 10px; background: #fff; border: 1px solid var(--line);
 }
 .client-logo img { max-height: 76px; max-width: 80%; object-fit: contain; }
 .client-mark {

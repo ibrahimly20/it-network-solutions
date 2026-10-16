@@ -202,6 +202,8 @@ p { margin: 0 0 1em; }
 .form .btn { justify-self: start; }
 .form-note { margin: 0; font-size: .9rem; color: var(--muted); min-height: 1.4em; }
 .form-note.error { color: #c0392b; }
+.form .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.form .btn:disabled { opacity: .6; cursor: wait; transform: none; }
 
 /* Footer */
 .site-footer { background: #081528; color: rgba(255,255,255,.6); padding: 56px 0 0; font-size: .93rem; }

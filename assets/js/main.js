@@ -24,31 +24,51 @@ const io = 'IntersectionObserver' in window
   : null;
 document.querySelectorAll('.reveal').forEach(el => io ? io.observe(el) : el.classList.add('visible'));
 
-// Contact form: opens the visitor's mail client (GitHub Pages has no backend)
-const CONTACT_EMAIL = 'contact@itnetworksolutions.ne';
+// Contact form: sent by FormSubmit (GitHub Pages has no backend)
+const CONTACT_EMAIL = 'ibrahim-ly@itnetwork-solutions.com';
 const form = document.getElementById('contact-form');
 const note = form.querySelector('.form-note');
-form.addEventListener('submit', e => {
+const submitBtn = form.querySelector('button[type="submit"]');
+const setNote = (text, isError) => {
+  note.textContent = text;
+  note.classList.toggle('error', !!isError);
+};
+form.addEventListener('submit', async e => {
   e.preventDefault();
   if (!form.checkValidity()) {
-    note.textContent = 'Merci de renseigner votre nom, un e-mail valide et votre message.';
-    note.classList.add('error');
+    setNote('Merci de renseigner votre nom, un e-mail valide et votre message.', true);
     return;
   }
   const d = new FormData(form);
-  const subject = `Demande de devis : ${d.get('domaine')} (${d.get('entreprise') || d.get('nom')})`;
-  const body = [
-    `Nom : ${d.get('nom')}`,
-    `Entreprise : ${d.get('entreprise')}`,
-    `E-mail : ${d.get('email')}`,
-    `Téléphone : ${d.get('telephone')}`,
-    `Domaine : ${d.get('domaine')}`,
-    '',
-    d.get('message'),
-  ].join('\n');
-  window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  note.classList.remove('error');
-  note.textContent = 'Votre messagerie va s\'ouvrir avec la demande pré-remplie.';
+  if (d.get('_honey')) return;
+  const payload = {
+    _subject: `Demande de devis : ${d.get('domaine')} (${d.get('entreprise') || d.get('nom')})`,
+    _template: 'table',
+    _replyto: d.get('email'),
+    Nom: d.get('nom'),
+    Entreprise: d.get('entreprise'),
+    'E-mail': d.get('email'),
+    'Téléphone': d.get('telephone'),
+    Domaine: d.get('domaine'),
+    Message: d.get('message'),
+  };
+  submitBtn.disabled = true;
+  setNote('Envoi en cours…');
+  try {
+    const res = await fetch(`https://formsubmit.co/ajax/${CONTACT_EMAIL}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || String(data.success) === 'false') throw new Error(data.message || res.status);
+    form.reset();
+    setNote('Merci, votre demande a bien été envoyée. Nous vous répondons rapidement.');
+  } catch (err) {
+    setNote(`L'envoi a échoué. Écrivez-nous directement à ${CONTACT_EMAIL} ou appelez le +227 89 08 60 60.`, true);
+  } finally {
+    submitBtn.disabled = false;
+  }
 });
 
 document.getElementById('year').textContent = new Date().getFullYear();

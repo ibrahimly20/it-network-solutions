@@ -209,7 +209,7 @@ p { margin: 0 0 1em; }
 .site-footer { background: #081528; color: rgba(255,255,255,.6); padding: 56px 0 0; font-size: .93rem; }
 .footer-inner { display: flex; justify-content: space-between; align-items: flex-start; gap: 32px; flex-wrap: wrap; padding-bottom: 36px; }
 .brand-footer { margin-bottom: 14px; color: #fff; }
-.brand-footer img { height: 44px; width: auto; }
+.brand-footer img { height: 56px; width: auto; }
 .footer-nav { display: flex; gap: 28px; flex-wrap: wrap; }
 .footer-nav a { color: rgba(255,255,255,.75); font-weight: 600; }
 .footer-nav a:hover { color: #fff; }

@@ -61,10 +61,18 @@ form.addEventListener('submit', async e => {
       body: JSON.stringify(payload),
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok || String(data.success) === 'false') throw new Error(data.message || res.status);
+    if (!res.ok || String(data.success) === 'false') {
+      const msg = String(data.message || '');
+      if (/activat/i.test(msg)) {
+        setNote('Formulaire en cours d\'activation : un e-mail de confirmation a été envoyé à l\'adresse de réception. Cliquez sur son lien, puis réessayez.', true);
+        return;
+      }
+      throw new Error(msg || res.status);
+    }
     form.reset();
     setNote('Merci, votre demande a bien été envoyée. Nous vous répondons rapidement.');
   } catch (err) {
+    console.error('Envoi du formulaire :', err);
     setNote(`L'envoi a échoué. Écrivez-nous directement à ${CONTACT_EMAIL} ou appelez le +227 89 08 60 60.`, true);
   } finally {
     submitBtn.disabled = false;
